@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsubscribe</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f0eb 0%, #e8e0d8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .icon { font-size: 60px; margin-bottom: 20px; }
+        h1 { font-family: 'Playfair Display', serif; color: #1a1a2e; margin-bottom: 15px; }
+        p { color: #666; line-height: 1.8; margin-bottom: 20px; }
+        .btn {
+            padding: 12px 30px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,107,107,0.3); }
+        .btn-success {
+            background: #00b09b;
+        }
+        .btn-success:hover { box-shadow: 0 10px 30px rgba(0,176,155,0.3); }
+        .hidden { display: none; }
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e8e0d4;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-family: 'Georgia', serif;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="unsubscribePage">
+        <!-- UNSUBSCRIBE FORM -->
+        <div id="unsubscribeForm">
+            <div class="icon">📧</div>
+            <h1>Unsubscribe</h1>
+            <p>Enter your email address to unsubscribe from our mailing list.</p>
+            <form id="unsubscribeFormSubmit" onsubmit="return handleUnsubscribe(event)">
+                <input 
+                    type="email" 
+                    id="unsubscribeEmail" 
+                    placeholder="you@example.com" 
+                    required
+                >
+                <button type="submit" class="btn">🔕 Unsubscribe</button>
+            </form>
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+        <div id="successMessage" class="hidden">
+            <div class="icon">✅</div>
+            <h1>You've Been Unsubscribed</h1>
+            <p>You will no longer receive emails from us. We're sorry to see you go!</p>
+            <button class="btn btn-success" onclick="window.location.href='/'">🏠 Return to Home</button>
+        </div>
+
+        <!-- NOT FOUND -->
+        <div id="notFound" class="hidden">
+            <div class="icon">🔍</div>
+            <h1>Email Not Found</h1>
+            <p>We couldn't find that email address in our system.</p>
+            <button class="btn btn-success" onclick="window.location.href='/'">🏠 Return to Home</button>
+        </div>
+    </div>
+
+    <script>
+        // ─── GET SUBSCRIBERS ──────────────────────────────────────────
+        function getSubscribers() {
+            const data = localStorage.getItem('subscribers');
+            return data ? JSON.parse(data) : [];
+        }
+
+        // ─── SAVE SUBSCRIBERS ─────────────────────────────────────────
+        function saveSubscribers(subscribers) {
+            localStorage.setItem('subscribers', JSON.stringify(subscribers));
+        }
+
+        // ─── HANDLE UNSUBSCRIBE ──────────────────────────────────────
+        function handleUnsubscribe(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('unsubscribeEmail').value.trim();
+            if (!email) {
+                alert('Please enter your email address.');
+                return false;
+            }
+
+            let subscribers = getSubscribers();
+            const initialCount = subscribers.length;
+
+            // Remove the email
+            subscribers = subscribers.filter(s => s.email.toLowerCase() !== email.toLowerCase());
+
+            if (subscribers.length === initialCount) {
+                // Email not found
+                document.getElementById('unsubscribeForm').classList.add('hidden');
+                document.getElementById('notFound').classList.remove('hidden');
+                return false;
+            }
+
+            saveSubscribers(subscribers);
+
+            // Show success
+            document.getElementById('unsubscribeForm').classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+
+            return false;
+        }
+
+        // ─── CHECK URL FOR EMAIL PARAMETER ───────────────────────────
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            if (email) {
+                document.getElementById('unsubscribeEmail').value = email;
+            }
+        });
+
+        window.handleUnsubscribe = handleUnsubscribe;
+    </script>
+
+</body>
+</html>
