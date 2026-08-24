@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Get Your Free eBook</title>
+    <title>Get Your Free Preview eBook</title>
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -338,7 +338,7 @@
             <!-- FORM CONTENT -->
             <div class="form-content">
                 <div class="badge">🎁 Free Gift</div>
-                <h1>Get Your <span>Free</span> eBook</h1>
+                <h1>Get Your <span>Free Preview </span>eBook</h1>
                 <p class="subtitle">
                     <strong>Instantly download</strong> a premium collection of stunning images 
                     and fascinating facts — <strong>absolutely free</strong>!
@@ -425,9 +425,9 @@
             <div class="success-message" id="successMessage">
                 <div class="icon">📧</div>
                 <h2>Thank You!</h2>
-                <p>Your free eBook is ready to download!</p>
+                <p>Your free preview eBook is ready to download!</p>
                 <button class="download-btn" id="downloadBtn" onclick="downloadEbook()">
-                    📥 Download Your Free eBook Now
+                    📥 Download Your Free Preview eBook Now
                 </button>
                 <p style="font-size:12px;color:#999;margin-top:15px;">
                     💡 You'll also receive a copy in your email inbox.
@@ -606,7 +606,7 @@
                 if (!saved) {
                     alert('This email is already subscribed! Please check your inbox.');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = '📥 Send Me My Free eBook';
+                    submitBtn.textContent = '📥 Send Me My Free Preview eBook';
                     return false;
                 }
 
